@@ -7,8 +7,8 @@
 namespace datetime {
     
     struct Duration {
-        Duration(std::uint32_t milliseconds = 0u, std::uint32_t seconds = 0u, std::uint32_t minutes = 0u, std::uint32_t hours = 0u, std::uint32_t days = 0u); // Automatically converts on overflow
-        ~Duration();
+        Duration(std::uint32_t milliseconds = 0u, std::uint32_t seconds = 0u, std::uint32_t minutes = 0u, std::uint32_t hours = 0u, std::uint32_t days = 0u) {} // Automatically converts on overflow
+        ~Duration() {}
 
         std::uint32_t days;
         std::uint8_t hours; // ranges from 0 to 23

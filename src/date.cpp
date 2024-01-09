@@ -21,9 +21,6 @@ namespace datetime {
         day = static_cast<std::uint8_t>(time.tm_mday);
         month = static_cast<std::uint8_t>(time.tm_mon + 1);
         year = static_cast<std::uint32_t>(time.tm_year + 1900);
-        
-        // std::tm::tm_wday - days since Sunday, 0 - 6 (https://en.cppreference.com/w/cpp/chrono/c/tm)
-        weekday = static_cast<Weekday>((time.tm_wday + 6) % 7);
     }
     
     Date::Date(std::uint8_t m, std::uint8_t d, std::uint32_t y) {
@@ -41,49 +38,73 @@ namespace datetime {
         year = y;
         month = m;
         day = d;
-        
-        // Calculating the day of the week: https://artofmemory.com/blog/how-to-calculate-the-day-of-the-week/
-        unsigned yy = y % 100;
-        unsigned yc = (yy + (yy / 4)) % 7;
-        const int mcs[12] = { 0, 3, 3, 6, 1, 4, 6, 2, 5, 0, 3, 5 };
-        unsigned mc = mcs[m - 1];
-        
-        // Returns if value is in range [min, max)
-        auto in_range = [](unsigned value, unsigned min, unsigned max) -> bool {
-            return value >= min && value < max;
-        };
-        
-        const int ccs[4] = { 6, 4, 2, 0 };
-        unsigned cc = ccs[static_cast<unsigned>(y / 100) % 4u];
-        
-        unsigned lyc = leap && (m == 1u || m == 2u) ? 1u : 0u;
-        weekday = static_cast<Weekday>(((yc + mc + cc + d - lyc) % 7 + 6) % 7);
     }
 
     Date::~Date() = default;
     
+    std::uint32_t Date::count_days() const {
+        unsigned count = 0u;
+        
+        for (unsigned y = 0u; y < year; ++y) {
+            count += is_leap_year(y) ? 366u : 365u;
+        }
+        
+        // Zero-based (January = 0)
+        const int days_per_month[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+        
+        for (unsigned m = 0u; m < month - 1u; ++m) {
+            count += days_per_month[m];
+        }
+        
+        return count + day;
+    }
+    
+    // The result of this function is not cached as a member of Date since the user has direct access to the member variables.
+    Weekday Date::weekday() const {
+        // Calculating the day of the week: https://artofmemory.com/blog/how-to-calculate-the-day-of-the-week/
+        unsigned yy = year % 100;
+        unsigned yc = (yy + (yy / 4)) % 7;
+        static const int mcs[12] = { 0, 3, 3, 6, 1, 4, 6, 2, 5, 0, 3, 5 };
+        unsigned mc = mcs[month - 1];
+        
+        // Returns if value is in range [min, max)
+        static auto in_range = [](unsigned value, unsigned min, unsigned max) -> bool {
+            return value >= min && value < max;
+        };
+        
+        static const int ccs[4] = { 6, 4, 2, 0 };
+        unsigned cc = ccs[static_cast<unsigned>(year / 100) % 4u];
+        
+        unsigned lyc = is_leap_year(year) && (month == 1u || month == 2u) ? 1u : 0u;
+        return static_cast<Weekday>(((yc + mc + cc + day - lyc) % 7 + 6) % 7);
+    }
+    
     Duration Date::operator-(const Date& other) const {
-        return false;
+        std::uint32_t d1 = count_days();
+        std::uint32_t d2 = other.count_days();
+        
+        // Duration is absolute.
+        return { 0u, 0u, 0u, 0u, d1 > d2 ? d1 - d2 - 1u : d2 - d1 - 1u };
     }
     
     bool Date::operator==(const Date& other) const {
-        return false;
+        return year == other.year && month == other.month && day == other.day;
     }
     
     bool Date::operator>(const Date& other) const {
-        return false;
+        return year > other.year || month > other.month || day > other.day;
     }
     
     bool Date::operator<(const Date& other) const {
-        return false;
+        return year < other.year || month < other.month || day < other.day;
     }
     
     bool Date::operator>=(const Date& other) const {
-        return false;
+        return year >= other.year || month >= other.month || day >= other.day;
     }
     
     bool Date::operator<=(const Date& other) const {
-        return false;
+        return year <= other.year || month <= other.month || day <= other.day;
     }
     
 }

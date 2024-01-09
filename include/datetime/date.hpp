@@ -39,6 +39,11 @@ namespace datetime {
         Date(std::uint8_t month, std::uint8_t day, std::uint32_t year); // MM-DD-YYYY
         ~Date();
         
+        // Convert this timestamp to days.
+        [[nodiscard]] std::uint32_t count_days() const;
+        [[nodiscard]] Weekday weekday() const;
+        
+        // Gets the duration between the two dates (exclusive, does not count end date as an additional day).
         Duration operator-(const Date& other) const;
         
         bool operator==(const Date& other) const;
@@ -50,8 +55,6 @@ namespace datetime {
         std::uint32_t year;
         std::uint8_t month; // ranges from 1 to 12
         std::uint8_t day; // ranges from 1 to 31
-        
-        Weekday weekday;
     };
     
 }

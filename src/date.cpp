@@ -67,11 +67,6 @@ namespace datetime {
         static const int mcs[12] = { 0, 3, 3, 6, 1, 4, 6, 2, 5, 0, 3, 5 };
         unsigned mc = mcs[month - 1];
         
-        // Returns if value is in range [min, max)
-        static auto in_range = [](unsigned value, unsigned min, unsigned max) -> bool {
-            return value >= min && value < max;
-        };
-        
         static const int ccs[4] = { 6, 4, 2, 0 };
         unsigned cc = ccs[static_cast<unsigned>(year / 100) % 4u];
         

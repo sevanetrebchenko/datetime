@@ -8,24 +8,38 @@ namespace datetime {
         return { };
     }
     
-    Time::Time() : hours(0u),
-                   minutes(0u),
-                   seconds(0u),
-                   milliseconds(0u)
-                   {
+    Time::Time() {
+        std::chrono::time_point<std::chrono::system_clock> now = std::chrono::system_clock::now();
+        std::time_t time_point = std::chrono::system_clock::to_time_t(now);
+        std::tm time { }; // UTC
+        gmtime_s(&time, &time_point);
+        
+        hour = static_cast<std::uint32_t>(time.tm_hour);
+        minute = static_cast<std::uint8_t>(time.tm_min);
+        second = static_cast<std::uint8_t>(time.tm_sec);
+        millisecond = static_cast<std::uint16_t>(std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch() % std::chrono::seconds(1)).count());
     }
     
-    Time::Time(std::uint32_t h, std::uint32_t m, std::uint32_t s, std::uint32_t ms) {
-        s += ms / 1000u;
-        milliseconds = ms % 1000u;
+    Time::Time(std::uint32_t hour, std::uint32_t minute, std::uint32_t second, std::uint32_t millisecond) : hour(hour),
+                                                                                                            minute(minute),
+                                                                                                            second(second),
+                                                                                                            millisecond(millisecond)
+                                                                                                            {
+        if (hour > 23u) {
+            throw std::runtime_error("invalid hour value - must be in range [0, 23]");
+        }
         
-        m += s / 60u;
-        seconds = s % 60u;
+        if (minute > 59u) {
+            throw std::runtime_error("invalid minute value - must be in range [0, 59]");
+        }
         
-        h += m / 60u;
-        minutes = m % 60u;
+        if (second > 59u) {
+            throw std::runtime_error("invalid second value - must be in range [0, 59]");
+        }
         
-        hours = h;
+        if (millisecond > 999u) {
+            throw std::runtime_error("invalid millisecond value - must be in range [0, 999]");
+        }
     }
     
     Time::~Time() = default;
@@ -45,56 +59,56 @@ namespace datetime {
             end = other;
         }
         
-        unsigned h = end.hours - start.hours;
+        unsigned h = end.hour - start.hour;
         unsigned m;
         unsigned s;
         unsigned ms;
         
-        if (end.minutes >= start.minutes) {
-            m = end.minutes - start.minutes;
+        if (end.minute >= start.minute) {
+            m = end.minute - start.minute;
         }
         else {
             h -= 1u;
-            m = (60u + end.minutes) - start.minutes;
+            m = (60u + end.minute) - start.minute;
         }
         
-        if (end.seconds >= start.seconds) {
-            s = end.seconds - start.seconds;
+        if (end.second >= start.second) {
+            s = end.second - start.second;
         }
         else {
             m -= 1u;
-            s = (60u + end.seconds) - start.seconds;
+            s = (60u + end.second) - start.second;
         }
         
-        if (end.milliseconds >= start.milliseconds) {
-            ms = end.milliseconds - start.milliseconds;
+        if (end.millisecond >= start.millisecond) {
+            ms = end.millisecond - start.millisecond;
         }
         else {
             s -= 1u;
-            ms = (1000u + end.milliseconds) - start.milliseconds;
+            ms = (1000u + end.millisecond) - start.millisecond;
         }
         
         return { ms, s, m, h, 0u };
     }
     
     bool Time::operator==(const Time& other) const {
-        return hours == other.hours && minutes == other.minutes && seconds == other.seconds && milliseconds == other.milliseconds;
+        return hour == other.hour && minute == other.minute && second == other.second && millisecond == other.millisecond;
     }
     
     bool Time::operator>(const Time& other) const {
-        return hours > other.hours || minutes > other.minutes || seconds > other.seconds || milliseconds > other.milliseconds;
+        return hour > other.hour || minute > other.minute || second > other.second || millisecond > other.millisecond;
     }
     
     bool Time::operator<(const Time& other) const {
-        return hours < other.hours || minutes < other.minutes || seconds < other.seconds || milliseconds < other.milliseconds;
+        return hour < other.hour || minute < other.minute || second < other.second || millisecond < other.millisecond;
     }
     
     bool Time::operator>=(const Time& other) const {
-        return hours >= other.hours || minutes >= other.minutes || seconds >= other.seconds || milliseconds >= other.milliseconds;
+        return hour >= other.hour || minute >= other.minute || second >= other.second || millisecond >= other.millisecond;
     }
     
     bool Time::operator<=(const Time& other) const {
-        return hours <= other.hours || minutes <= other.minutes || seconds <= other.seconds || milliseconds <= other.milliseconds;
+        return hour <= other.hour || minute <= other.minute || second <= other.second || millisecond <= other.millisecond;
     }
     
 }

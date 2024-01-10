@@ -12,16 +12,18 @@ namespace datetime {
     struct Timestamp {
         static Timestamp now();
 
-        Timestamp() = delete;
+        Timestamp(); // Returns a timestamp of the current date/time, equivalent to calling Timestamp::now().
+        // Automatically accounts for overflow.
+        Timestamp(std::uint8_t month, std::uint8_t day, std::uint32_t year, std::uint32_t hours, std::uint32_t minutes, std::uint32_t seconds = 0u, std::uint32_t milliseconds = 0u);
         ~Timestamp();
+        
+        Duration operator-(const Timestamp& other) const;
         
         bool operator==(const Timestamp& other) const;
         bool operator<(const Timestamp& other) const;
         bool operator<=(const Timestamp& other) const;
         bool operator>(const Timestamp& other) const;
         bool operator>=(const Timestamp& other) const;
-        
-        Duration operator-(const Timestamp& other) const;
         
         Date date;
         Time time;

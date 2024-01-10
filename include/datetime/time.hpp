@@ -22,10 +22,10 @@ namespace datetime {
         bool operator>=(const Time& other) const;
         bool operator<=(const Time& other) const;
         
-        std::uint32_t hours;
-        std::uint8_t minutes; // ranges from 0 to 59
-        std::uint8_t seconds; // ranges from 0 to 59
-        std::uint16_t milliseconds; // ranges from 0 to 999
+        std::uint32_t hour;
+        std::uint8_t minute; // ranges from 0 to 59
+        std::uint8_t second; // ranges from 0 to 59
+        std::uint16_t millisecond; // ranges from 0 to 999
     };
 
 }

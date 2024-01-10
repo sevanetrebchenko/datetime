@@ -15,7 +15,7 @@ namespace datetime {
                    {
     }
     
-    Time::Time(std::uint32_t ms, std::uint32_t s, std::uint32_t m, std::uint32_t h) {
+    Time::Time(std::uint32_t h, std::uint32_t m, std::uint32_t s, std::uint32_t ms) {
         s += ms / 1000u;
         milliseconds = ms % 1000u;
         

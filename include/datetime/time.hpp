@@ -11,7 +11,7 @@ namespace datetime {
         static Time now();
         
         Time(); // Returns the current time, equivalent to calling Time::now().
-        Time(std::uint32_t milliseconds, std::uint32_t seconds, std::uint32_t minutes, std::uint32_t hours); // Automatically converts on overflow.
+        Time(std::uint32_t hours, std::uint32_t minutes, std::uint32_t seconds = 0u, std::uint32_t milliseconds = 0u); // Automatically converts on overflow.
         ~Time();
         
         Duration operator-(const Time& other) const;

@@ -64,4 +64,4 @@ time since 00:00 January 1st, 2024: 10 day(s), 10 hour(s), 36 minute(s), 22 seco
 ```
 
 ## License
-The source code for this project is licensed under the MIT license, which can be found in the LICENSE.txt file.
+The source code for this project is licensed under the MIT license, which can be found in the [LICENSE.txt](https://github.com/sevanetrebchenko/datetime/blob/master/LICENSE.txt) file.

@@ -28,7 +28,6 @@ int main() {
     std::cout << std::setw(2) << std::setfill('0') << (int) now.date.day;
     std::cout << "/";
     std::cout << now.date.year;
-    
     std::cout << "\n";
     
     // Time is in UTC by default, must be adjusted for timezones.
@@ -49,7 +48,6 @@ int main() {
     std::cout << (int) duration.minutes << " minute(s), ";
     std::cout << (int) duration.seconds << " second(s), ";
     std::cout << (int) duration.milliseconds << " millisecond(s)";
-    std::cout << "\n";
     std::cout << "\n";
     
     return 0;

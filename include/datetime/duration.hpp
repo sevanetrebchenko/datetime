@@ -2,7 +2,7 @@
 #ifndef DATETIME_DURATION_HPP
 #define DATETIME_DURATION_HPP
 
-#include <cstdint>
+#include <cstdint> // std::uint8_t, std::uint16_t, std::uint32_t
 
 namespace datetime {
     

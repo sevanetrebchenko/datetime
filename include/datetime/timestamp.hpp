@@ -5,7 +5,7 @@
 #include "datetime/date.hpp"
 #include "datetime/time.hpp"
 #include "datetime/timestamp.hpp"
-#include <cstdint>
+#include <cstdint> // std::uint8_t, std::uint16_t, std::uint32_t
 
 namespace datetime {
     
@@ -14,7 +14,7 @@ namespace datetime {
 
         Timestamp(); // Returns a timestamp of the current date/time, equivalent to calling Timestamp::now().
         // Automatically accounts for overflow.
-        Timestamp(std::uint8_t month, std::uint8_t day, std::uint32_t year, std::uint32_t hours, std::uint32_t minutes, std::uint32_t seconds = 0u, std::uint32_t milliseconds = 0u);
+        Timestamp(std::uint8_t month, std::uint8_t day, std::uint32_t year, std::uint32_t hours = 0u, std::uint32_t minutes = 0u, std::uint32_t seconds = 0u, std::uint32_t milliseconds = 0u);
         ~Timestamp();
         
         Duration operator-(const Timestamp& other) const;

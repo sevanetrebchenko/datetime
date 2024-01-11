@@ -1,6 +1,5 @@
 
 #include "datetime/timestamp.hpp"
-#include <stdexcept>
 
 namespace datetime {
     

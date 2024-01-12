@@ -1,7 +1,7 @@
 # `datetime`
 
 ## Overview
-`datetime` is a simple C++ library for working with timestamps, dates, and the durations between them (to millisecond precision).
+`datetime` is a simple C++ library for working with time, dates, and the durations between them. It supports up to millisecond precision.
 
 ## Building
 This project is built using CMake, and requires a compiler that supports C++11 (or higher). Use the following example to include `datetime` into your project's build tree:
@@ -42,7 +42,7 @@ int main() {
     Timestamp start = Timestamp(January, 01, 2024); // or Timestamp start = Timestamp(01, 01, 2024);
     Duration duration = now - start;
     
-    std::cout << "time since 00:00 January 1st, 2024: ";
+    std::cout << "time since 00:00 01/01/2024: ";
     std::cout << duration.days << " day(s), ";
     std::cout << (int) duration.hours << " hour(s), ";
     std::cout << (int) duration.minutes << " minute(s), ";
